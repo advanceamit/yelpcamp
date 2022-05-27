@@ -135,9 +135,9 @@ const onetomany2=async()=>{
 // }
 // findonetomany2()
 
-schema2table.findOne({name:"schema2name"}).populate('product').then((schema2table)=>{
-    console.log(schema2table);
-})
+// schema2table.findOne({name:"schema2name"}).populate('product').then((schema2table)=>{
+//     console.log(schema2table);
+// })
 
 app.listen(3000,(()=>{
     console.log("server is running port message ");
