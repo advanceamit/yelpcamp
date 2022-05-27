@@ -6,6 +6,7 @@ const ejs=require('ejs')
 
 app.use(express.urlencoded({ extended: true }));
 const mongoose=require('mongoose')
+const { stringify } = require('querystring')
 
  app.engine('ejs' ,ejsMate)
 app.use(express.json())
@@ -38,6 +39,14 @@ var Schema=new mongoose.Schema({
     
 })
 const camptable=mongoose.model('camptable', Schema)
+
+const Schema2=new mongoose.Schema([{
+    name:String,
+    city:String,
+    product:[{type:mongoose.Schema.Types.ObjectId,ref :'products'}]
+}])
+
+const schema2table=mongoose.model('schema2table', Schema2)
 const onetofewcreate=async()=>{
     console.log("this is funtion");
     console.log();
@@ -100,7 +109,35 @@ const onetomany=async(id)=>{
                 }
 }
 
-onetomany()
+// onetomany()
+
+const onetomany2=async()=>{
+    const schema2tabledata=new schema2table({name:"schema2name",city:"schema2city"})
+    const b= await camptable.findOne({name:'b'})
+    const c= await camptable.findOne({name:'c'})
+    
+    const push1=await schema2tabledata.product.push(b)
+    
+    const push2=await schema2tabledata.product.push(c)
+    console.log(push1);
+    console.log(push2)
+     const sc2data=await schema2tabledata.save()
+    
+    console.log(sc2data);
+
+}
+// onetomany2()
+
+// const findonetomany2=async()=>{
+//     const find=await schema2table.findOne({name:'schema2name'}).populate('product')
+//     console.log(find);
+
+// }
+// findonetomany2()
+
+schema2table.findOne({name:"schema2name"}).populate('product').then((schema2table)=>{
+    console.log(schema2table);
+})
 
 app.listen(3000,(()=>{
     console.log("server is running port message ");
